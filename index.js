@@ -7,7 +7,7 @@ const jsonParser = bodyParser.json({limit: 1024 * 1024 * 20, type: 'application/
 const app = express();
 app.use(jsonParser);
 
-process.env.NODE_ENV = 'development'
+process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 
 // init the different routes.
 require('./app/routes')(app);
