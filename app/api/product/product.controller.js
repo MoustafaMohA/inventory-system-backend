@@ -15,9 +15,9 @@ exports.create = (req, res) => {
     const product = req.body;
     const callback = (err, data) => {
         if (err)
-            res.status(500).send(err);
+            return res.status(500).send(err);
 
-        res.send(data);
+        return res.send(data);
     }
     mysqlUtility.insert('products', product, callback);
 };

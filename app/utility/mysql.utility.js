@@ -68,8 +68,13 @@ const insert = (tableName, object, callback) => {
         const count = data[0].count;
         if (count === 1) {
             const columns = Object.keys(object).join();
-            const values = Object.values(object).join();
-            const insertStatement = `INSERT INTO ${config.database}.${tableName} (${columns}) VALUES (${values})`;
+            const escapeChars = [];
+            for(let index = 0; index < Object.keys(object).length; ++index) {
+                escapeChars.push('?');
+            }
+            const valuesString = escapeChars.join();
+            let insertStatement = `INSERT INTO ${config.database}.${tableName} (${columns}) VALUES (${valuesString})`;
+            insertStatement = mysql.format(insertStatement, Object.values(object));
             createQuery(insertStatement).then(value => {
                 // console.log(`new object has been created in ${tableName}`);
                 if (callback) {
